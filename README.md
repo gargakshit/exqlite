@@ -32,6 +32,7 @@ Package: https://hex.pm/packages/exqlite
   `+03:00` as it does not respect daylight savings time.
 * You need to manually provide encryption keys using SQL `PRAGMA` statements.
   See https://www.zetetic.net/sqlcipher/sqlcipher-api/#PRAGMA_key on how.
+* Currently SQLCipher's re-keying is not supported.
 
 
 ## Installation
@@ -54,9 +55,8 @@ defp deps do
 end
 ```
 
-You will still need to provide encryption key using SQL `PRAGMA` statements on
-connection.
-
+You can set the `:key` option while connecting to use database encryption.
+`nil` (default) means the database won't be encrypted.
 
 ## Configuration
 

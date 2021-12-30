@@ -56,6 +56,8 @@ defmodule Exqlite.Connection do
 
     * `:database` - The path to the database. In memory is allowed. You can use
       `:memory` or `":memory:"` to designate that.
+    * `:key` - Encryption key for the database. Empty key means that the
+      database won't be encrypted.
     * `:journal_mode` - Sets the journal mode for the sqlite connection. Can be
       one of the following `:delete`, `:truncate`, `:persist`, `:memory`,
       `:wal`, or `:off`. Defaults to `:delete`. It is recommended that you use
@@ -340,6 +342,14 @@ defmodule Exqlite.Connection do
     end
   end
 
+  defp set_key(db, options) do
+    pragma = Pragma.key(options)
+
+    if pragma !== nil do
+      set_pragma(db, "key", pragma)
+    end
+  end
+
   defp set_journal_mode(db, options) do
     maybe_set_pragma(db, "journal_mode", Pragma.journal_mode(options))
   end
@@ -391,6 +401,7 @@ defmodule Exqlite.Connection do
   defp do_connect(path, options) do
     with :ok <- mkdir_p(path),
          {:ok, db} <- Sqlite3.open(path),
+         :ok <- set_key(db, options),
          :ok <- set_journal_mode(db, options),
          :ok <- set_temp_store(db, options),
          :ok <- set_synchronous(db, options),

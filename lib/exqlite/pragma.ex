@@ -9,6 +9,15 @@ defmodule Exqlite.Pragma do
     Keyword.get(options, :busy_timeout, 2000)
   end
 
+  def key(nil), do: key([])
+
+  def key(options) do
+    case Keyword.get(options, :key, nil) do
+      nil -> nil
+      key -> key
+    end
+  end
+
   def journal_mode(nil), do: journal_mode([])
 
   def journal_mode(options) do
