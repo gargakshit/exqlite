@@ -36,6 +36,10 @@ defmodule Exqlite.ConnectionTest do
 
       File.rm(path)
     end
+
+    test "connects with encryption enabled" do
+      {:ok, _} = Connection.connect(database: :memory, key: "test_key")
+    end
   end
 
   describe ".disconnect/2" do

@@ -347,6 +347,8 @@ defmodule Exqlite.Connection do
 
     if pragma !== nil do
       set_pragma(db, "key", pragma)
+    else
+      :ok
     end
   end
 
