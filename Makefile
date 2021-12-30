@@ -100,9 +100,6 @@ endif
 # TODO: We should allow the person building to be able to specify this
 CFLAGS += -DNDEBUG=1
 
-# Link with OpenSSL
-LDFLAGS += -lcrypto
-
 ifeq ($(STATIC_ERLANG_NIF),)
 all: $(PREFIX) $(BUILD) $(LIB_NAME)
 else
@@ -115,7 +112,7 @@ $(BUILD)/%.o: c_src/%.c
 
 $(LIB_NAME): $(OBJ)
 	@echo " LD $(notdir $@)"
-	$(CC) -o $@ $(LDFLAGS) $^
+	$(CC) -o $@ $(LDFLAGS) $^ -lcrypto
 
 $(ARCHIVE_NAME): $(OBJ)
 	@echo " AR $(notdir $@)"

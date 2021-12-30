@@ -65,13 +65,6 @@ jobs:
             otp: "24"
           - elixir: "1.10"
             otp: "24"
-        include:
-          - os: windows-2019
-            elixir: "1.13"
-            otp: "24"
-          - os: windows-2019
-            elixir: "1.12"
-            otp: "24"
     steps:
       - uses: actions/checkout@v2
 
