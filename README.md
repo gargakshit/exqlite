@@ -6,6 +6,9 @@
 
 An Elixir SQLite3 library.
 
+This fork replaces sqlite3 with sqlcipher and is mostly intended for internal
+use. I do **NOT** guarantee any stability or support.
+
 If you are looking for the Ecto adapater, take a look at the
 [Ecto SQLite3 library][ecto_sqlite3].
 
@@ -27,15 +30,31 @@ Package: https://hex.pm/packages/exqlite
   second column somewhere storing the timezone name and shifting it when you
   get it from the database. This is more reliable than storing the offset as
   `+03:00` as it does not respect daylight savings time.
+* You need to manually provide encryption keys using SQL `PRAGMA` statements.
+  See https://www.zetetic.net/sqlcipher/sqlcipher-api/#PRAGMA_key on how.
 
 
 ## Installation
 
 ```elixir
 defp deps do
-  {:exqlite, "~> 0.8.4"}
+  {:exqlite, github: "gargakshit/exqlite"}
 end
 ```
+
+**Note:** You need openssl installed. On macos, you can do
+`brew install openssl`.
+
+To use this along with `ecto_sqlite3`, specify the `override: true` option in
+your `mix.exs` file. For example:
+
+```elixir
+defp deps do
+  {:exqlite, github: "gargakshit/exqlite", override: true}
+end
+
+You will still need to provide encryption key using SQL `PRAGMA` statements on
+connection.
 
 
 ## Configuration
@@ -135,3 +154,7 @@ complicated and error prone.
 Feel free to check the project out and submit pull requests.
 
 [ecto_sqlite3]: <https://github.com/elixir-sqlite/ecto_sqlite3>
+
+## SQLCipher's License
+
+See [LICENSE.sqlcipher](./LICENSE.sqlcipher)

@@ -19,12 +19,14 @@
 SRC = $(wildcard c_src/*.c)
 HEADERS = $(wildcard c_src/*.h)
 
-CFLAGS ?= -O2 -Wall
+CFLAGS ?= -O3 -Wall
 ifneq ($(DEBUG),)
 	CFLAGS += -g
 endif
-CFLAGS += -I"$(ERTS_INCLUDE_DIR)"
+CFLAGS += -I"$(ERTS_INCLUDE_DIR)" -DSQLITE_HAS_CODEC
 CFLAGS += -Ic_src
+
+LDFLAGS += -lcrypto
 
 KERNEL_NAME := $(shell uname -s)
 
@@ -49,8 +51,9 @@ else
 		LDFLAGS += -fPIC -shared
 	endif
 	ifeq ($(KERNEL_NAME), Darwin)
-		CFLAGS += -fPIC
-		LDFLAGS += -dynamiclib -undefined dynamic_lookup
+		OPENSSL_PATH ?= /usr/local/opt/openssl@3
+		CFLAGS += -fPIC -I$(OPENSSL_PATH)/include
+		LDFLAGS += -dynamiclib -undefined dynamic_lookup -L$(OPENSSL_PATH)/lib
 	endif
 	ifeq (MINGW, $(findstring MINGW,$(KERNEL_NAME)))
 		CFLAGS += -fPIC
