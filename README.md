@@ -52,6 +52,7 @@ your `mix.exs` file. For example:
 defp deps do
   {:exqlite, github: "gargakshit/exqlite", override: true}
 end
+```
 
 You will still need to provide encryption key using SQL `PRAGMA` statements on
 connection.

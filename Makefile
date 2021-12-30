@@ -26,8 +26,6 @@ endif
 CFLAGS += -I"$(ERTS_INCLUDE_DIR)" -DSQLITE_HAS_CODEC
 CFLAGS += -Ic_src
 
-LDFLAGS += -lcrypto
-
 KERNEL_NAME := $(shell uname -s)
 
 PREFIX = $(MIX_APP_PATH)/priv
@@ -101,6 +99,9 @@ endif
 
 # TODO: We should allow the person building to be able to specify this
 CFLAGS += -DNDEBUG=1
+
+# Link with OpenSSL
+LDFLAGS += -lcrypto
 
 ifeq ($(STATIC_ERLANG_NIF),)
 all: $(PREFIX) $(BUILD) $(LIB_NAME)
